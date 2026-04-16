@@ -74,29 +74,21 @@ router = APIRouter()
 #         "domain": domain.domain_name
 #     }
 
-
-
 @router.post("/domain", response_model=DomainResponse)
 def create_domain(payload: DomainCreate):
     db = next(get_db_session("master"))
-    print(f"Creating domain: {payload.domain_name}")
     try:
-        # ❗ Check if domain already exists
         existing = db.query(Domain).filter(
             Domain.domain_name == payload.domain_name
         ).first()
-
         if existing:
             raise HTTPException(status_code=400, detail="Domain already exists")
-
         # ✅ Create new domain
         new_domain = Domain(**payload.dict())
-
         db.add(new_domain)
         db.commit()
         db.refresh(new_domain)
 
         return new_domain
-
     finally:
         db.remove()

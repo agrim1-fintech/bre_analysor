@@ -27,4 +27,4 @@ class DomainResponse(DomainBase):
     updated_at: Optional[datetime] = None
 
     class Config:
-        from_attributes = True  # ✅ Pydantic v2
+        from_attributes = True  # ✅ Pydantic v2    
